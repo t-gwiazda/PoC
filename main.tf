@@ -2,6 +2,7 @@ provider "aws" {
   region = "eu-central-1"
 }
 
+#
 #variable "instance_flavor" {
 #  default     = "t2.micro"
 #  description = "Size of instance"
@@ -36,7 +37,7 @@ data "aws_security_group" "tg-sg" {
 
 resource "aws_instance" "server1" {
   #ami = "ami-0c6b1d09930fac512"
-#  ami = "${data.aws_ami.latest-amazon-linux2.id}"
+  #ami = "${data.aws_ami.latest-amazon-linux2.id}"
   ami = data.aws_ami.latest-amazon-linux2.id
   instance_type = "t2.micro"
 #  instance_type = "${var.instance_flavor}"
