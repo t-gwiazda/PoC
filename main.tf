@@ -2,6 +2,7 @@ provider "aws" {
   region = "eu-central-1"
 }
 
+
 ##
 #variable "instance_flavor" {
 #  default     = "t2.micro"
