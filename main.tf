@@ -3,12 +3,6 @@ provider "aws" {
 }
 
 
-##
-#variable "instance_flavor" {
-#  default     = "t2.micro"
-#  description = "Size of instance"
-#}
-
 data "aws_ami" "latest-amazon-linux2" {
   most_recent = true
   owners      = ["137112412989"] # Amazon
@@ -29,7 +23,7 @@ data "aws_ami" "latest-amazon-linux2" {
   }
 }
 
-#select aws_security_group for sec_group_for_http_and_ssh_icmp
+#select aws_security_group
 data "aws_security_group" "tg-sg" {
   tags = {
     Name = "tg-sg"
@@ -41,8 +35,8 @@ resource "aws_instance" "server1" {
   #ami = "${data.aws_ami.latest-amazon-linux2.id}"
   ami = data.aws_ami.latest-amazon-linux2.id
   instance_type = "t2.micro"
-#  instance_type = "${var.instance_flavor}"
   vpc_security_group_ids      = [data.aws_security_group.tg-sg.id]
+  security_groups = ["${aws_security_group.sg_web.id}"]
 
   tags = {
     Name = "server1"
