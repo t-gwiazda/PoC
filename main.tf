@@ -23,6 +23,9 @@ data "aws_ami" "latest-amazon-linux2" {
   }
 }
 
+data "aws_availability_zones" "all" {
+}
+
 #select aws_security_group
 data "aws_security_group" "tg-sg" {
   tags = {
