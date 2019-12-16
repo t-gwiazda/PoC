@@ -1,17 +1,17 @@
 resource "aws_security_group" "sg_web" {
-  name        = "sg_web_prof"
+  name        = "sg_web"
   description = "Web security group"
 
   ingress {
-    from_port   = "${var.web_port}"
-    to_port     = "${var.web_port}"
+    from_port   = 80
+    to_port     = 80
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 resource "aws_security_group" "sg_elb" {
-  name        = "sg_elb_${var.environment}"
+  name        = "sg_elb"
   description = "ELB Security Group"
 
   ingress {
@@ -30,20 +30,24 @@ resource "aws_security_group" "sg_elb" {
 }
 
 resource "aws_elb" "elb" {
-  name               = "Terraform-elb-${var.environment}"
-  security_groups    = ["${aws_security_group.sg_elb.id}"]
+  name               = "Terraform-elb"
+  security_groups    = [aws_security_group.sg_elb.id]
   availability_zones = "${data.aws_availability_zones.all.names}"
+#  instances       = "${aws_instance.server1.*.id}"  
+  instances       = [aws_instance.server1.id,aws_instance.server2.id]
   health_check {
-    target              = "HTTP:${var.web_port}/"
+    target              = "HTTP:80/"
     interval            = 30
     timeout             = 3
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
   listener {
-    instance_port     = "${var.web_port}"
+    instance_port     = 80
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
   }
 }
+
+
