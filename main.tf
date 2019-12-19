@@ -26,7 +26,6 @@ data "aws_ami" "latest-amazon-linux2" {
 data "aws_availability_zones" "all" {
 }
 
-#select aws_security_group
 data "aws_security_group" "tg-sg" {
   tags = {
     Name = "tg-sg"
@@ -39,11 +38,11 @@ resource "aws_instance" "server1" {
   ami = data.aws_ami.latest-amazon-linux2.id
   instance_type = "t2.micro"
   vpc_security_group_ids      = [data.aws_security_group.tg-sg.id]
-#  security_groups = [aws_security_group.sg_web.id]
 
   tags = {
     Name = "server1"
   }
+
   key_name                    = "linux-tg-key"
   user_data                   = <<-EOF
                 #! /bin/bash
@@ -61,16 +60,14 @@ output "server1_public_hostname" {
 
 
 resource "aws_instance" "server2" {
-  #ami = "ami-0c6b1d09930fac512"
-  #ami = "${data.aws_ami.latest-amazon-linux2.id}"
   ami = data.aws_ami.latest-amazon-linux2.id
   instance_type = "t2.micro"
   vpc_security_group_ids      = [data.aws_security_group.tg-sg.id]
-#  security_groups = [aws_security_group.sg_web.id]
 
   tags = {
     Name = "server2"
   }
+
   key_name                    = "linux-tg-key"
   user_data                   = <<-EOF
                 #! /bin/bash
