@@ -80,6 +80,6 @@ resource "aws_instance" "server2" {
 }
 
 output "server2_public_hostname" {
-  value = "${aws_instance.server1.public_dns}"
+  value = "${aws_instance.server2.public_dns}"
 }
 
